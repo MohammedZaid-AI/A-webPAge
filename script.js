@@ -496,5 +496,5 @@ $("#quote").addEventListener("submit", e => {
   if (/0000 0000/.test(CONFIG.whatsapp)){ status.textContent = "The shop's WhatsApp number isn't set yet. Add it in CONFIG at the top of the script."; return; }
   const text = `Hello Gift City, I'm ${f.get("name").trim()}.\nI need: ${f.get("item")}\nQuantity: ${f.get("qty") || "not sure yet"}\n${f.get("msg") || ""}`.trim();
   status.textContent = "Opening WhatsApp with your message.";
-  open("https://wa.me/" + digits(CONFIG.whatsapp).replace("+", "") + "?text=" + encodeURIComponent(text), "_blank", "noopener");
+  open("https://wa.me/" + digits(CONFIG.whatsapp).replace("+", "") + "?text=" + encodeURIComponent(text), "_blank", "noopener,noreferrer");
 });

@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Gift City Qatar | Advertising and printing, Doha</title>
 <meta name="description" content="Gift City Qatar is a wholesale supplier of advertising items and printing in Doha: business cards, mugs, trophies, bags, signage and more.">
 <link rel="icon" type="image/png" href="favicon.png">
@@ -74,7 +75,7 @@
       <p class="lede reveal" style="--d:2">Bring your logo, your idea and your deadline. We put it on mugs, pens, trophies, lanyards, boxes and vehicles, all from one shop in Doha.</p>
       <form class="hero-ask reveal" style="--d:3" id="heroAsk">
         <label class="sr" for="heroNeed">What do you need printed?</label>
-        <input id="heroNeed" name="need" placeholder="What do you need printed?" autocomplete="off">
+        <input id="heroNeed" name="need" placeholder="What do you need printed?" autocomplete="off" maxlength="120">
         <button class="ask-btn" type="submit">Get a quote <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       </form>
       <p class="hero-note reveal" style="--d:4">No account needed. We reply on WhatsApp with a price per piece.</p>
@@ -262,15 +263,15 @@
           <div><dt>Call</dt><dd id="phoneList"></dd></div>
           <div><dt>WhatsApp</dt><dd><a id="waLink" href="#"></a></dd></div>
           <div><dt>Email</dt><dd><a id="mailLink" href="#"></a></dd></div>
-          <div><dt>Website</dt><dd><a href="https://www.giftcityqatar.com" target="_blank" rel="noopener">giftcityqatar.com</a></dd></div>
-          <div><dt>Instagram</dt><dd><a href="https://www.instagram.com/giftcity_qatar/" target="_blank" rel="noopener">@giftcity_qatar</a></dd></div>
+          <div><dt>Website</dt><dd><a href="https://www.giftcityqatar.com" target="_blank" rel="noopener noreferrer">giftcityqatar.com</a></dd></div>
+          <div><dt>Instagram</dt><dd><a href="https://www.instagram.com/giftcity_qatar/" target="_blank" rel="noopener noreferrer">@giftcity_qatar</a></dd></div>
         </dl>
       </div>
       <form class="form reveal" style="--d:1" id="quote" novalidate>
-        <label>Your name<input name="name" autocomplete="name" required></label>
+        <label>Your name<input name="name" autocomplete="name" required maxlength="80"></label>
         <label>What do you need?<select name="item" id="itemSelect"></select></label>
-        <label>Quantity<input name="qty" inputmode="numeric" placeholder="For example, 500"></label>
-        <label>Details<textarea name="msg" rows="3" placeholder="Size, colors, deadline"></textarea></label>
+        <label>Quantity<input name="qty" inputmode="numeric" placeholder="For example, 500" maxlength="12" pattern="[0-9 ,.]*"></label>
+        <label>Details<textarea name="msg" rows="3" placeholder="Size, colors, deadline" maxlength="800"></textarea></label>
         <button class="btn btn-light" type="submit">Send on WhatsApp</button>
         <p class="status" id="status" role="status"></p>
       </form>
