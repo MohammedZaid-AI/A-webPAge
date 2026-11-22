@@ -1,0 +1,12 @@
+# Local tooling, not part of the site
+.agents/
+.claude/
+skills-lock.json
+
+# Original uncropped posters (the site uses the cropped photos in images/)
+images/posters/
+
+# OS files
+Thumbs.db
+desktop.ini
+.DS_Store
