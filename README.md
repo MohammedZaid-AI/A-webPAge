@@ -25,12 +25,3 @@ Plain HTML, CSS and JavaScript. No build step and no frameworks.
 | `images/` | Cropped product photos |
 | `logo.png`, `favicon.png` | Logo and browser-tab icon |
 
-## Run it locally
-
-Open `index.html` in a browser, or serve the folder:
-
-```bash
-python -m http.server 8765
-```
-
-Then visit http://localhost:8765.
