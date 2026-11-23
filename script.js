@@ -1,10 +1,3 @@
-/* ===== Client details: change these once the client sends the real ones ===== */
-const CONFIG = {
-  phones:   ["+974 6633 4429", "+974 3371 8277", "+974 5032 8433"],
-  whatsapp: "+974 6633 4429",   // the number the quote form sends to
-  email:    "giftcity.advertising@gmail.com"
-};
-
 const $ = (s, c = document) => c.querySelector(s);
 const $$ = (s, c = document) => [...c.querySelectorAll(s)];
 const root = document.documentElement;
