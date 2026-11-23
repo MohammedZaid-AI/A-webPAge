@@ -9,7 +9,7 @@ const config = {
   phones: e.PHONES.split(",").map(s => s.trim()).filter(Boolean),
   whatsapp: e.WHATSAPP,
   email: e.EMAIL,
-  supabase: { url: e.SUPABASE_URL, key: e.SUPABASE_KEY }
+  supabase: { url: e.SUPABASE_URL, key: e.SUPABASE_KEY, bucket: "product-images" }
 };
 fs.writeFileSync("config.js", "const CONFIG = " + JSON.stringify(config, null, 2) + ";\n");
 console.log("config.js written");
