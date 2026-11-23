@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Manage products | Gift City Qatar</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="index.html" aria-label="Gift City Qatar, home">
+      <img class="brand-logo" src="logo.png" alt="" width="44" height="44">
+      <span class="brand-name">Gift City</span>
+    </a>
+    <div class="nav-right">
+      <a class="pill-btn" href="products.html">View products page</a>
+      <button class="pill-btn" id="signOut" type="button" hidden>Sign out</button>
+    </div>
+  </div>
+</header>
+
+<main class="shop">
+  <div class="wrap">
+    <h1>Manage products</h1>
+
+    <form class="adm-card adm-login" id="login" novalidate>
+      <h2>Sign in</h2>
+      <label>Email<input name="email" type="email" autocomplete="username" required maxlength="120"></label>
+      <label>Password<input name="password" type="password" autocomplete="current-password" required maxlength="200"></label>
+      <button class="btn" type="submit">Sign in</button>
+      <p class="adm-status" id="loginStatus" role="status"></p>
+    </form>
+
+    <div class="adm-grid" id="panel" hidden>
+      <form class="adm-card" id="pform" novalidate>
+        <h2 id="formTitle">Add a product</h2>
+        <label>Photo
+          <input name="photo" id="photo" type="file" accept="image/jpeg,image/png,image/webp">
+        </label>
+        <div class="adm-preview" id="preview" hidden><img alt="Photo preview"></div>
+        <label>Product name<input name="name" required maxlength="120"></label>
+        <label>Product type
+          <input name="category" list="cats" required maxlength="60" placeholder="For example, Shirt Button" autocomplete="off">
+          <datalist id="cats"></datalist>
+        </label>
+        <label>Product code<input name="code" required maxlength="40" placeholder="For example, BTN-1025" autocomplete="off"></label>
+        <label>Description<textarea name="description" rows="4" maxlength="2000"></textarea></label>
+        <label>Price in QAR (leave empty if it depends on the order)<input name="price" inputmode="decimal" maxlength="10" placeholder="For example, 12.50"></label>
+        <div class="adm-actions">
+          <button class="btn" type="submit" id="saveBtn">Save product</button>
+          <button class="btn btn-ghost" type="button" id="cancelBtn" hidden>Cancel edit</button>
+        </div>
+        <p class="adm-status" id="formStatus" role="status"></p>
+      </form>
+
+      <section aria-labelledby="listTitle">
+        <h2 id="listTitle">All products</h2>
+        <ul class="adm-list" id="list"></ul>
+        <p class="pnote" id="listNote" role="status"></p>
+      </section>
+    </div>
+  </div>
+</main>
+
+<script src="config.js"></script>
+<script src="shop.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>
