@@ -30,7 +30,9 @@ loginForm.addEventListener("submit", async e => {
     loginStatus.textContent = err.status === 400 ? "Wrong email or password." : err.message;
   }
 });
-signOut.addEventListener("click", () => { setToken(null); resetForm(); show(false); });
+signOut.addEventListener("click", () => {
+  sb("/auth/v1/logout", { method: "POST", token: getToken() }).catch(() => {});   // revoke the session server-side too
+  setToken(null); resetForm(); show(false); });
 
 /* ----- list ----- */
 async function refresh(){
