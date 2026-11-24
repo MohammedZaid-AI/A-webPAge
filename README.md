@@ -54,7 +54,7 @@ The chat button answers visitors from `company_knowledge.md` only, using [Groq](
 
 1. Fill in `company_knowledge.md`. Text inside `<!-- -->` is ignored. While every section is empty, the bot replies that the information is not available.
 2. Create an API key at console.groq.com > API Keys.
-3. In Vercel > Project > Settings > Environment Variables, add `GROQ_API_KEY` (the key) and optionally `GROQ_MODEL` (default `llama-3.1-8b-instant`). Redeploy.
+3. In Vercel > Project > Settings > Environment Variables, add `GROQ_API_KEY` (the key) and optionally `GROQ_MODEL` (default `openai/gpt-oss-20b`). Redeploy.
 4. To run it locally: `npm install`, copy `.env.example` to `.env.local`, add the key, then `vercel dev`. Opening the HTML files directly shows the button, but `/api/chat` needs `vercel dev`.
 
 How it stays on topic: the model must reply in JSON and quote the knowledge file. The server rejects an answer when a quote is not in the file, or when it contains a number or email that is not in the file. Off-topic questions and greetings get fixed replies.

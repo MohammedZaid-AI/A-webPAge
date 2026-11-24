@@ -5,7 +5,7 @@ const fs = require("fs");
 const path = require("path");
 const Groq = require("groq-sdk");
 
-const MODEL = process.env.GROQ_MODEL || "llama-3.1-8b-instant";
+const MODEL = process.env.GROQ_MODEL || "openai/gpt-oss-20b";   // Groq's replacement for llama-3.1-8b-instant (shut down 2026-08-16)
 const MAX_MESSAGE = 1000;      // characters in one user message
 const MAX_HISTORY = 10;        // earlier turns sent to the model
 const MAX_HISTORY_CHARS = 6000;
@@ -112,7 +112,8 @@ async function handler(req, res){
   try {
     const groq = new Groq({ apiKey: process.env.GROQ_API_KEY, timeout: 20e3, maxRetries: 1 });
     const out = await groq.chat.completions.create({
-      model: MODEL, temperature: 0, max_tokens: 600, response_format: { type: "json_object" },
+      model: MODEL, temperature: 0, max_completion_tokens: 1200, response_format: { type: "json_object" },
+      ...(MODEL.startsWith("openai/gpt-oss") ? { reasoning_effort: "low" } : {}),   // reasoning models think first; keep that short so the reply fits
       messages: [{ role: "system", content: systemPrompt(kb) }, ...messages]
     });
     let r = {};
