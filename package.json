@@ -1,0 +1,13 @@
+{
+  "name": "gift-city-qatar",
+  "private": true,
+  "scripts": {
+    "build": "node build.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "groq-sdk": "1.6.0"
+  }
+}

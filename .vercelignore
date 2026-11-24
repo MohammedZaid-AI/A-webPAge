@@ -3,3 +3,7 @@ supabase-lockdown.sql
 README.md
 SECURITY_AUDIT_REPORT.md
 skills-lock.json
+node_modules/
+public/
+.env
+.env.local

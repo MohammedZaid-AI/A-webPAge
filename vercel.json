@@ -1,7 +1,10 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "node build.js",
-  "outputDirectory": ".",
+  "outputDirectory": "public",
+  "functions": {
+    "api/chat.js": { "includeFiles": "company_knowledge.md", "maxDuration": 30 }
+  },
   "headers": [
     {
       "source": "/(.*)",

@@ -13,3 +13,11 @@ desktop.ini
 
 # Client details and Supabase settings, kept local
 config.js
+
+# Dependencies, build output and local secrets
+node_modules/
+public/
+.env
+.env.local
+.env*.local
+.vercel/
