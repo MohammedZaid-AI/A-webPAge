@@ -7,6 +7,11 @@ const loginForm = $("#login"), panel = $("#panel"), signOut = $("#signOut");
 const form = $("#pform"), list = $("#list"), listNote = $("#listNote");
 const formStatus = $("#formStatus"), loginStatus = $("#loginStatus");
 let products = [], editing = null, picked = null;
+/* "" -> null (ask for price); "12,50" or "QAR 12.5" -> 12.5; anything else -> NaN */
+const toPrice = text => {
+  const t = String(text).replace(/qar/i, "").trim().replace(",", ".");
+  return t === "" ? null : Math.round(Number(t) * 100) / 100;
+};
 
 function show(signedIn){
   loginForm.hidden = signedIn; panel.hidden = !signedIn; signOut.hidden = !signedIn;
@@ -110,8 +115,7 @@ form.addEventListener("submit", async e => {
   e.preventDefault();
   const f = Object.fromEntries(new FormData(form));
   const name = f.name.trim(), category = f.category.trim(), code = f.code.trim();
-  const priceText = f.price.trim().replace(",", ".");
-  const price = priceText === "" ? null : Number(priceText);
+  const price = toPrice(f.price);
   if (!name || !category || !code) return formStatus.textContent = "Fill in the name, type and code.";
   if (price !== null && !(price >= 0)) return formStatus.textContent = "Price must be a number, or leave it empty.";
   if (!picked && !(editing && editing.image_path)) return formStatus.textContent = "Choose a photo for this product.";
@@ -132,6 +136,73 @@ form.addEventListener("submit", async e => {
     if (picked && row.image_path) removePhoto(row.image_path);
     formStatus.textContent = err.code === "23505" ? "Another product already uses that code." : "Could not save: " + err.message;
   } finally { $("#saveBtn").disabled = false; }
+});
+
+/* ----- import from Excel ----- */
+/* headings are matched loosely ("Product code", "code", "SKU" ...) so the admin's own sheet usually works as is */
+const HEADINGS = {
+  name: ["productname", "name", "product"],
+  category: ["producttype", "type", "category"],
+  code: ["productcode", "code", "sku"],
+  description: ["description", "details"],
+  price: ["price", "priceqar", "priceinqar"]
+};
+const LIMITS = { name: 120, category: 60, code: 40, description: 2000 };   // same limits as supabase.sql
+const iform = $("#iform"), importStatus = $("#importStatus"), importErrors = $("#importErrors"), importBtn = $("#importBtn");
+let importRows = [];
+
+function sheetToProducts(rows){
+  const head = (rows[0] || []).map(h => String(h).toLowerCase().replace(/[^a-z]/g, ""));
+  const col = {};
+  for (const [k, names] of Object.entries(HEADINGS)) col[k] = head.findIndex(h => names.includes(h));
+  const missing = ["name", "category", "code"].filter(k => col[k] < 0);
+  if (missing.length) return { errors: ["The first row needs the headings " + missing.map(k => ({ name: "Product name", category: "Product type", code: "Product code" })[k]).join(", ") + "."], products: [] };
+
+  const errors = [], products = [], seen = new Map();
+  rows.slice(1).forEach((r, i) => {
+    const line = i + 2, cell = k => col[k] < 0 ? "" : String(r[col[k]] ?? "").trim();
+    if (r.every(v => String(v).trim() === "")) return;   // blank row
+    const p = { name: cell("name"), category: cell("category"), code: cell("code"), description: cell("description"), price: toPrice(cell("price")) };
+    const problems = [];
+    for (const k of ["name", "category", "code"]) if (!p[k]) problems.push(`no ${k === "category" ? "type" : k}`);
+    for (const [k, max] of Object.entries(LIMITS)) if (p[k].length > max) problems.push(`${k} is longer than ${max} characters`);
+    if (p.price !== null && !(p.price >= 0)) problems.push(`price "${cell("price")}" is not a number`);
+    if (p.code && seen.has(p.code)) problems.push(`code ${p.code} is also on row ${seen.get(p.code)}`);
+    if (problems.length) return errors.push(`Row ${line}: ${problems.join(", ")}.`);
+    for (const k of ["description", "price"]) if (col[k] < 0) delete p[k];   // a missing column leaves existing values alone
+    seen.set(p.code, line); products.push(p);
+  });
+  return { errors, products };
+}
+
+$("#sheet").addEventListener("change", async e => {
+  const file = e.target.files[0];
+  importRows = []; importBtn.disabled = true; importErrors.hidden = true; importStatus.textContent = "";
+  if (!file) return;
+  try {
+    const { errors, products: rows } = sheetToProducts(await readXlsx(file));
+    importErrors.innerHTML = errors.map(x => `<li>${esc(x)}</li>`).join(""); importErrors.hidden = !errors.length;
+    if (!rows.length) return importStatus.textContent = errors.length ? "Nothing to import. Fix the rows above and choose the file again." : "The sheet has no products.";
+    const codes = new Set(products.map(p => p.code)), updates = rows.filter(p => codes.has(p.code)).length;
+    importRows = rows; importBtn.disabled = false;
+    importStatus.textContent = `Ready: ${rows.length - updates} new, ${updates} to update` + (errors.length ? `. ${errors.length} rows above will be skipped.` : ".");
+  } catch(err){ importStatus.textContent = err.message; }
+});
+
+iform.addEventListener("submit", async e => {
+  e.preventDefault();
+  if (!importRows.length) return;
+  importBtn.disabled = true; importStatus.textContent = "Importing…";
+  try {
+    /* one request, so the whole sheet saves or none of it does; an existing code updates that row and keeps its photo */
+    await write("/rest/v1/products?on_conflict=code", { method: "POST", body: importRows, headers: { Prefer: "resolution=merge-duplicates,return=minimal" } });
+    importStatus.textContent = `Imported ${importRows.length} products. They are now on the Products page.`;
+    importRows = []; iform.reset(); importErrors.hidden = true;
+    refresh();
+  } catch(err){
+    importStatus.textContent = "Could not import, nothing was saved: " + err.message;
+    importBtn.disabled = false;
+  }
 });
 
 show(!!getToken());

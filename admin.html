@@ -39,6 +39,7 @@
     </form>
 
     <div class="adm-grid" id="panel" hidden>
+      <div class="adm-side">
       <form class="adm-card" id="pform" novalidate>
         <h2 id="formTitle">Add a product</h2>
         <label>Photo
@@ -60,6 +61,18 @@
         <p class="adm-status" id="formStatus" role="status"></p>
       </form>
 
+      <form class="adm-card" id="iform" novalidate>
+        <h2>Import from Excel</h2>
+        <p class="adm-hint">Put these headings in the first row: <b>Product name</b>, <b>Product type</b>, <b>Product code</b>, <b>Description</b>, <b>Price</b>. A row whose code is already on the site updates that product and keeps its photo. Add photos afterwards with Edit.</p>
+        <label>Excel file (.xlsx)
+          <input id="sheet" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+        </label>
+        <ul class="adm-errors" id="importErrors" hidden></ul>
+        <button class="btn" type="submit" id="importBtn" disabled>Import products</button>
+        <p class="adm-status" id="importStatus" role="status"></p>
+      </form>
+      </div>
+
       <section aria-labelledby="listTitle">
         <h2 id="listTitle">All products</h2>
         <ul class="adm-list" id="list"></ul>
@@ -71,6 +84,7 @@
 
 <script src="config.js"></script>
 <script src="shop.js"></script>
+<script src="xlsx.js"></script>
 <script src="admin.js"></script>
 </body>
 </html>

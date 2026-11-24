@@ -24,7 +24,8 @@ Plain HTML, CSS and JavaScript. No build step and no frameworks.
 | `script.js` | Home page behavior |
 | `config.js` | Contact details, WhatsApp number and Supabase connection. Edit here. |
 | `products.html`, `products.js` | Public Products page: filter, details, Buy Now on WhatsApp |
-| `admin.html`, `admin.js` | Admin page at `/admin.html`: sign in, add, edit, delete products |
+| `admin.html`, `admin.js` | Admin page at `/admin.html`: sign in, add, edit, delete products, or import many from an Excel sheet |
+| `xlsx.js` | Reads the first sheet of an uploaded `.xlsx` file in the browser (no library) |
 | `shop.js` | Code shared by the Products and admin pages |
 | `supabase.sql` | Database and photo storage setup, run once |
 | `images/` | Cropped product photos |
